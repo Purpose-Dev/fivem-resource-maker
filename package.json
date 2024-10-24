@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/Purpose-Dev/create-fivem-resource#readme",
   "dependencies": {
+    "chalk": "^5.3.0",
+    "cli-progress": "^3.12.0",
     "inquirer": "^12.0.0"
   }
 }
