@@ -1,4 +1,4 @@
-# create-fivem-resource
+# fivem-resource-maker
 
 A CLI Tool to quickly generate FiveM resources with support for JavaScript, TypeScript, and Lua.
 
@@ -14,11 +14,11 @@ A CLI Tool to quickly generate FiveM resources with support for JavaScript, Type
 
 ## Installation
 
-You can install `create-fivem-resource` globally using npm or pnpm:
+You can install `fivem-resource-maker` globally using npm or pnpm:
 
 ```bash
-npm install -g create-fivem-resource # If you use npm
-pnpm install -g create-fivem-resource # If you use pnpm
+npm install -g fivem-resource-maker # If you use npm
+pnpm install -g fivem-resource-maker # If you use pnpm
 ```
 
 ## Usage
@@ -26,8 +26,8 @@ pnpm install -g create-fivem-resource # If you use pnpm
 Run the CLI tool to generate a new FiveM resource:
 
 ```bash
-npx create-fivem-resource # If you use npm
-pnpx create-fivem-resource # If you use pnpm
+npx fivem-resource-maker # If you use npm
+pnpx fivem-resource-maker # If you use pnpm
 ```
 
 ## Features
