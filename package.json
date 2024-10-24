@@ -7,9 +7,10 @@
   "keywords": [],
   "packageManager": "pnpm@9.12.2",
   "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "files": [
+    "index.js",
+    "templates/"
+  ],
   "bin": {
     "create-fivem-resource": "index.js"
   },
