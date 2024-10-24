@@ -6,6 +6,7 @@
   "license": "ISC",
   "keywords": [],
   "packageManager": "pnpm@9.12.2",
+  "private": false,
   "type": "module",
   "files": [
     "index.js",
