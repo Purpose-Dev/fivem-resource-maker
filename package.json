@@ -1,0 +1,16 @@
+{
+  "name": "create-fivem-resource",
+  "author": "",
+  "description": "",
+  "version": "1.0.0",
+  "license": "ISC",
+  "keywords": [],
+  "main": "index.js",
+  "packageManager": "pnpm@9.12.2",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "inquirer": "^12.0.0"
+  }
+}
