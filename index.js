@@ -3,7 +3,6 @@ import inquirer from 'inquirer';
 import * as url from "node:url";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { SingleBar } from "cli-progress";
 import chalk from "chalk";
 import { exec } from "child_process";
 import { promisify } from "util";
@@ -58,22 +57,8 @@ const tsBuildToolOptions = {
     choices: ['esbuild', 'tsc', 'webpack', 'rollup'],
 };
 
-let bar;
-
-function startProgressBar(totalFiles) {
-    bar = new SingleBar({}, { format: 'Copying | {bar} | {percentage}% | {value}/{total} files' });
-    bar.start(totalFiles, 0);
-}
-
-function stopProgressBar() {
-    if (bar) {
-        bar.stop();
-    }
-}
-
 function copyFile(sourcePath, destinationPath) {
     fs.copyFileSync(sourcePath, destinationPath);
-    bar.increment();
 }
 
 function copyDirectory(source, destination) {
@@ -82,7 +67,6 @@ function copyDirectory(source, destination) {
     }
 
     const files = fs.readdirSync(source);
-    startProgressBar(files.length);
 
     files.forEach(file => {
         const sourcePath = path.join(source, file);
@@ -94,13 +78,14 @@ function copyDirectory(source, destination) {
             copyFile(sourcePath, destinationPath);
         }
     });
-
-    stopProgressBar();
 }
 
 async function initializeProject(destinationPath, packageManager, buildTool) {
     try {
         const command = packageManager === 'npm' ? `${packageManager} init -y` : `${packageManager} init`;
+        console.log(chalk.blue('📦  Initializing project...'));
+        process.chdir(destinationPath);
+        console.log(chalk.blue(`🔧  Changed working directory to ${destinationPath}`));
         await execAsync(command);
 
         if (buildTool) {
@@ -113,14 +98,15 @@ async function initializeProject(destinationPath, packageManager, buildTool) {
 
             const buildToolDep = buildToolDependencies[buildTool] ? buildToolDependencies[buildTool] : '';
             const installCommand = `${packageManager} add -D ${buildToolDep}`.trim();
-
+            console.log(chalk.blue('🔧  Installing build tool dependencies...'));
             await execAsync(installCommand);
         }
 
+        console.log(chalk.blue('📦  Installing CitizenFX dependencies...'));
         await execAsync(`${packageManager} add -D @citizenfx/server @citizenfx/client`);
-        console.info(chalk.green(`Project initialized successfully with ${packageManager}`));
+        console.info(chalk.green(`✅  Project initialized successfully with ${packageManager}`));
     } catch (error) {
-        console.error(chalk.red(`Failed to initialize project with ${packageManager}: ${error.message}`));
+        console.error(chalk.red(`❌  Failed to initialize project with ${packageManager}: ${error.message}`));
     }
 }
 
@@ -180,15 +166,15 @@ async function main() {
         case 'JavaScript':
             copyDirectory(path.join(templatePath, 'client'), path.join(destinationPath, 'client'));
             copyDirectory(path.join(templatePath, 'server'), path.join(destinationPath, 'server'));
-            const { packageManager } = await inquirer.prompt(packageManagerOptions);
-            await initializeProject(destinationPath, packageManager, null);
+            const { packageManager: pmJs } = await inquirer.prompt(packageManagerOptions);
+            await initializeProject(destinationPath, pmJs, null);
             break;
         case 'TypeScript':
             copyDirectory(path.join(templatePath, 'src', 'client'), path.join(destinationPath, 'src', 'client'));
             copyDirectory(path.join(templatePath, 'src', 'server'), path.join(destinationPath, 'src', 'server'));
-            const { packageManagerTs } = await inquirer.prompt(packageManagerOptions);
+            const { packageManager: pmTs } = await inquirer.prompt(packageManagerOptions);
             const { tsBuildTool } = await inquirer.prompt(tsBuildToolOptions);
-            await initializeProject(destinationPath, packageManagerTs, tsBuildTool);
+            await initializeProject(destinationPath, pmTs, tsBuildTool);
             await copyBuildToolConfig(tsBuildTool, templatePath, destinationPath);
             break;
         case 'Lua':
@@ -199,7 +185,8 @@ async function main() {
             console.error(chalk.red("Unsupported language."));
             return;
     }
-    console.info(chalk.green(`Resource ${resourceName} created successfully in ${destinationPath}`));
+
+    console.info(chalk.green(`🌟 Resource ${resourceName} created successfully in ${destinationPath}`));
 }
 
 main()
