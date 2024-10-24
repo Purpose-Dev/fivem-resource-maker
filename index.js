@@ -90,20 +90,24 @@ function copyDirectory(source, destination) {
 
 function initializeProject(destinationPath, packageManager, buildTool) {
     try {
-        const command = packageManager === 'npm' ? `${packageManager} init -y` : `${packageManager} init`;
+        const command = packageManager === 'npm' ? `${packageManager} init -y` : `${packageManager.toString()} init`;
         execSync(command, { cwd: destinationPath, stdio: 'inherit' });
 
-        const buildToolDependencies = {
-            esbuild: 'esbuild',
-            tsc: 'typescript',
-            webpack: 'webpack webpack-cli',
-            rollup: 'rollup',
-        };
 
-        const buildToolDep = buildToolDependencies[buildTool] ? buildToolDependencies[buildTool] : '';
-        const installCommand = `${packageManager} install @citizenfx/server @citizenfx/client ${buildToolDep}`.trim();
+        if (buildTool) {
+            const buildToolDependencies = {
+                esbuild: 'esbuild',
+                tsc: 'typescript',
+                webpack: 'webpack webpack-cli',
+                rollup: 'rollup',
+            };
 
-        execSync(installCommand, { cwd: destinationPath, stdio: 'inherit' });
+            const buildToolDep = buildToolDependencies[buildTool] ? buildToolDependencies[buildTool] : '';
+            const installCommand = `${packageManager} install @citizenfx/server @citizenfx/client ${buildToolDep}`.trim();
+
+            execSync(installCommand, { cwd: destinationPath, stdio: 'inherit' });
+        }
+
         console.info(chalk.green(`Project initialized successfully with ${packageManager}`));
     } catch (error) {
         console.error(chalk.red(`Failed to initialize project with ${packageManager}: ${error.message}`));
@@ -157,13 +161,13 @@ inquirer.prompt(questions).then(answers => {
             case 'JavaScript':
                 copyDirectory(path.join(templatePath, 'client'), path.join(destinationPath, 'client'));
                 copyDirectory(path.join(templatePath, 'server'), path.join(destinationPath, 'server'));
-                const packageManager = await inquirer.prompt(packageManagerOptions);
-                initializeProject(destinationPath, packageManager);
+                const { packageManager } = await inquirer.prompt(packageManagerOptions);
+                initializeProject(destinationPath, packageManager, null);
                 break;
             case 'TypeScript':
                 copyDirectory(path.join(templatePath, 'src', 'client'), path.join(destinationPath, 'src', 'client'));
                 copyDirectory(path.join(templatePath, 'src', 'server'), path.join(destinationPath, 'src', 'server'));
-                const packageManagerTs = await inquirer.prompt(packageManagerOptions);
+                const { packageManagerTs } = await inquirer.prompt(packageManagerOptions);
                 const { tsBuildTool } = await inquirer.prompt(tsBuildToolOptions);
                 initializeProject(destinationPath, packageManagerTs, tsBuildTool);
                 copyBuildToolConfig(tsBuildTool, templatePath, destinationPath);
