@@ -1,15 +1,26 @@
 {
   "name": "create-fivem-resource",
   "author": "",
-  "description": "",
+  "description": "A CLI Tool to quickly generate FiveM resources with support for JavaScript, TypeScript, and Lua.",
   "version": "1.0.0",
   "license": "ISC",
   "keywords": [],
-  "main": "index.js",
   "packageManager": "pnpm@9.12.2",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "create-fivem-resource": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Purpose-Dev/create-fivem-resource.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Purpose-Dev/create-fivem-resource/issues"
+  },
+  "homepage": "https://github.com/Purpose-Dev/create-fivem-resource#readme",
   "dependencies": {
     "inquirer": "^12.0.0"
   }
