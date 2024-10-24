@@ -1,6 +1,6 @@
 {
-  "name": "create-fivem-resource",
-  "author": "",
+  "name": "@purpose/create-fivem-resource",
+  "author": "Purpose",
   "description": "A CLI Tool to quickly generate FiveM resources with support for JavaScript, TypeScript, and Lua.",
   "version": "1.0.0",
   "license": "ISC",
