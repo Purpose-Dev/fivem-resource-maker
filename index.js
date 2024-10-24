@@ -41,15 +41,31 @@ const packageManagerOptions = {
     choices: ['npm', 'yarn', 'pnpm'],
 }
 
+let bar;
+
+function startProgressBar(totalFiles) {
+    bar = new SingleBar({}, { format: 'Copying | {bar} | {percentage}% | {value}/{total} files' });
+    bar.start(totalFiles, 0);
+}
+
+function stopProgressBar() {
+    if (bar) {
+        bar.stop();
+    }
+}
+
+function copyFile(sourcePath, destinationPath) {
+    fs.copyFileSync(sourcePath, destinationPath);
+    bar.increment();
+}
+
 function copyDirectory(source, destination) {
     if (!fs.existsSync(destination)) {
         fs.mkdirSync(destination, { recursive: true });
     }
 
     const files = fs.readdirSync(source);
-    const bar = new SingleBar({}, { format: 'Copying | {bar} | {percentage}% | {value}/{total} files' });
-
-    bar.start(files.length, 0);
+    startProgressBar(files.length);
 
     files.forEach(file => {
         const sourcePath = path.join(source, file);
@@ -58,13 +74,11 @@ function copyDirectory(source, destination) {
         if (fs.statSync(sourcePath).isDirectory()) {
             copyDirectory(sourcePath, destinationPath);
         } else {
-            fs.copyFileSync(sourcePath, destinationPath);
+            copyFile(sourcePath, destinationPath);
         }
-
-        bar.increment();
     });
 
-    bar.stop();
+    stopProgressBar();
 }
 
 inquirer.prompt(questions).then(answers => {
