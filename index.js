@@ -41,6 +41,13 @@ const packageManagerOptions = {
     choices: ['npm', 'yarn', 'pnpm'],
 }
 
+const tsBuildToolOptions = {
+    type: 'list',
+    name: 'tsBuildTool',
+    message: 'Choose a TypeScript build tool',
+    choices: ['esbuild', 'tsc', 'webpack', 'rollup'],
+}
+
 let bar;
 
 function startProgressBar(totalFiles) {
