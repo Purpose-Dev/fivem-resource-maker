@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import inquirer from 'inquirer';
-import * as url from "node:url";
-import * as fs from "node:fs";
-import * as path from "node:path";
-import chalk from "chalk";
-import { exec } from "child_process";
-import { promisify } from "util";
+import * as url from 'node:url';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import chalk from 'chalk';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
@@ -33,7 +33,7 @@ const questions = [
         type: 'input',
         name: 'description',
         message: 'Enter the description of resource:',
-    }
+    },
 ];
 
 const luaOptions = {
@@ -68,7 +68,7 @@ function copyDirectory(source, destination) {
 
     const files = fs.readdirSync(source);
 
-    files.forEach(file => {
+    files.forEach((file) => {
         const sourcePath = path.join(source, file);
         const destinationPath = path.join(destination, file);
 
@@ -82,10 +82,15 @@ function copyDirectory(source, destination) {
 
 async function initializeProject(destinationPath, packageManager, buildTool) {
     try {
-        const command = packageManager === 'npm' ? `${packageManager} init -y` : `${packageManager} init`;
+        const command =
+            packageManager === 'npm'
+                ? `${packageManager} init -y`
+                : `${packageManager} init`;
         console.log(chalk.blue('📦  Initializing project...'));
         process.chdir(destinationPath);
-        console.log(chalk.blue(`🔧  Changed working directory to ${destinationPath}`));
+        console.log(
+            chalk.blue(`🔧  Changed working directory to ${destinationPath}`)
+        );
         await execAsync(command);
 
         if (buildTool) {
@@ -96,17 +101,32 @@ async function initializeProject(destinationPath, packageManager, buildTool) {
                 rollup: 'rollup rollup-plugin-terser @rollup/plugin-node-resolve @rollup/plugin-commonjs',
             };
 
-            const buildToolDep = buildToolDependencies[buildTool] ? buildToolDependencies[buildTool] : '';
-            const installCommand = `${packageManager} add -D ${buildToolDep}`.trim();
-            console.log(chalk.blue('🔧  Installing build tool dependencies...'));
+            const buildToolDep = buildToolDependencies[buildTool]
+                ? buildToolDependencies[buildTool]
+                : '';
+            const installCommand =
+                `${packageManager} add -D ${buildToolDep}`.trim();
+            console.log(
+                chalk.blue('🔧  Installing build tool dependencies...')
+            );
             await execAsync(installCommand);
         }
 
         console.log(chalk.blue('📦  Installing CitizenFX dependencies...'));
-        await execAsync(`${packageManager} add -D @citizenfx/server @citizenfx/client`);
-        console.info(chalk.green(`✅  Project initialized successfully with ${packageManager}`));
+        await execAsync(
+            `${packageManager} add -D @citizenfx/server @citizenfx/client`
+        );
+        console.info(
+            chalk.green(
+                `✅  Project initialized successfully with ${packageManager}`
+            )
+        );
     } catch (error) {
-        console.error(chalk.red(`❌  Failed to initialize project with ${packageManager}: ${error.message}`));
+        console.error(
+            chalk.red(
+                `❌  Failed to initialize project with ${packageManager}: ${error.message}`
+            )
+        );
     }
 }
 
@@ -121,13 +141,22 @@ async function copyBuildToolConfig(tsBuildTool, templatePath, destinationPath) {
     const configFile = configFiles[tsBuildTool];
     if (configFile) {
         try {
-            copyFile(path.join(templatePath, configFile), path.join(destinationPath, configFile));
-            console.info(chalk.blue(`${tsBuildTool} configuration file copied.`));
+            copyFile(
+                path.join(templatePath, configFile),
+                path.join(destinationPath, configFile)
+            );
+            console.info(
+                chalk.blue(`${tsBuildTool} configuration file copied.`)
+            );
         } catch (error) {
-            console.error(chalk.red(`Error copying ${tsBuildTool} configuration file: ${error.message}`));
+            console.error(
+                chalk.red(
+                    `Error copying ${tsBuildTool} configuration file: ${error.message}`
+                )
+            );
         }
     } else {
-        console.error(chalk.red("Unsupported build tool."));
+        console.error(chalk.red('Unsupported build tool.'));
     }
 }
 
@@ -140,14 +169,19 @@ async function main() {
         TypeScript: 'ts',
     };
 
-    const templatePath = path.join(__dirname, 'templates', languageFolderMap[language]);
+    const templatePath = path.join(
+        __dirname,
+        'templates',
+        languageFolderMap[language]
+    );
     const destinationPath = path.join(process.cwd(), resourceName);
 
     if (!fs.existsSync(destinationPath)) {
         fs.mkdirSync(destinationPath);
     }
 
-    let fxmanifestTemplate = fs.readFileSync(path.join(templatePath, 'fxmanifest.lua'), 'utf8')
+    let fxmanifestTemplate = fs
+        .readFileSync(path.join(templatePath, 'fxmanifest.lua'), 'utf8')
         .replace('%AUTHOR%', author)
         .replace('%DESCRIPTION%', description);
 
@@ -156,38 +190,73 @@ async function main() {
         if (lua54) {
             fxmanifestTemplate = fxmanifestTemplate.replace('%LUA54%', 'yes');
         } else {
-            fxmanifestTemplate = fxmanifestTemplate.replace(/^\s*lua54.*(\r?\n)?/gm, '');
+            fxmanifestTemplate = fxmanifestTemplate.replace(
+                /^\s*lua54.*(\r?\n)?/gm,
+                ''
+            );
         }
     }
 
-    fs.writeFileSync(path.join(destinationPath, 'fxmanifest.lua'), fxmanifestTemplate);
+    fs.writeFileSync(
+        path.join(destinationPath, 'fxmanifest.lua'),
+        fxmanifestTemplate
+    );
 
     switch (language) {
         case 'JavaScript':
-            copyDirectory(path.join(templatePath, 'client'), path.join(destinationPath, 'client'));
-            copyDirectory(path.join(templatePath, 'server'), path.join(destinationPath, 'server'));
-            const { packageManager: pmJs } = await inquirer.prompt(packageManagerOptions);
+            copyDirectory(
+                path.join(templatePath, 'client'),
+                path.join(destinationPath, 'client')
+            );
+            copyDirectory(
+                path.join(templatePath, 'server'),
+                path.join(destinationPath, 'server')
+            );
+            const { packageManager: pmJs } = await inquirer.prompt(
+                packageManagerOptions
+            );
             await initializeProject(destinationPath, pmJs, null);
             break;
         case 'TypeScript':
-            copyDirectory(path.join(templatePath, 'src', 'client'), path.join(destinationPath, 'src', 'client'));
-            copyDirectory(path.join(templatePath, 'src', 'server'), path.join(destinationPath, 'src', 'server'));
-            const { packageManager: pmTs } = await inquirer.prompt(packageManagerOptions);
+            copyDirectory(
+                path.join(templatePath, 'src', 'client'),
+                path.join(destinationPath, 'src', 'client')
+            );
+            copyDirectory(
+                path.join(templatePath, 'src', 'server'),
+                path.join(destinationPath, 'src', 'server')
+            );
+            const { packageManager: pmTs } = await inquirer.prompt(
+                packageManagerOptions
+            );
             const { tsBuildTool } = await inquirer.prompt(tsBuildToolOptions);
             await initializeProject(destinationPath, pmTs, tsBuildTool);
-            await copyBuildToolConfig(tsBuildTool, templatePath, destinationPath);
+            await copyBuildToolConfig(
+                tsBuildTool,
+                templatePath,
+                destinationPath
+            );
             break;
         case 'Lua':
-            copyDirectory(path.join(templatePath, 'client'), path.join(destinationPath, 'client'));
-            copyDirectory(path.join(templatePath, 'server'), path.join(destinationPath, 'server'));
+            copyDirectory(
+                path.join(templatePath, 'client'),
+                path.join(destinationPath, 'client')
+            );
+            copyDirectory(
+                path.join(templatePath, 'server'),
+                path.join(destinationPath, 'server')
+            );
             break;
         default:
-            console.error(chalk.red("Unsupported language."));
+            console.error(chalk.red('Unsupported language.'));
             return;
     }
 
-    console.info(chalk.green(`🌟 Resource ${resourceName} created successfully in ${destinationPath}`));
+    console.info(
+        chalk.green(
+            `🌟 Resource ${resourceName} created successfully in ${destinationPath}`
+        )
+    );
 }
 
-main()
-    .catch(console.error);
+main().catch(console.error);
