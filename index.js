@@ -63,9 +63,26 @@ const tsBuildToolOptions = {
     choices: ['esbuild', 'tsc', 'webpack', 'rollup'],
 };
 
-const nuiOptions = {
-
-};
+const nuiOptions = [
+    {
+        type: 'list',
+        name: 'nuiType',
+        message: 'Select a framework or library for your nui:',
+        choices: ['vanilla', 'react', 'vue', 'svelte', 'angular'],
+    },
+    {
+        type: 'list',
+        name: 'cssFramework',
+        message: 'Select a CSS framework for your nui:',
+        choices: ['none', 'bootstrap', 'tailwind', 'sass', 'less'],
+    },
+    {
+        type: 'list',
+        name: 'language',
+        message: 'Select a language for your nui:',
+        choices: ['JavaScript', 'TypeScript'],
+    }
+];
 
 function copyFile(sourcePath, destinationPath) {
     fs.copyFileSync(sourcePath, destinationPath);
@@ -168,6 +185,11 @@ async function copyBuildToolConfig(tsBuildTool, templatePath, destinationPath) {
     } else {
         console.error(chalk.red('Unsupported build tool.'));
     }
+}
+
+async function nuiUsage() {
+    const answers = await inquirer.prompt(nuiOptions);
+    const { nuiType, cssFramework, language } = answers;
 }
 
 async function main() {
