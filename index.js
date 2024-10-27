@@ -39,7 +39,7 @@ const questions = [
         name: 'nuiUsage',
         message: 'Do you want to use NUI?',
         default: false,
-    }
+    },
 ];
 
 const luaOptions = {
@@ -81,7 +81,7 @@ const nuiOptions = [
         name: 'language',
         message: 'Select a language for your nui:',
         choices: ['JavaScript', 'TypeScript'],
-    }
+    },
 ];
 
 function copyFile(sourcePath, destinationPath) {
@@ -291,5 +291,4 @@ async function main() {
     );
 }
 
-main()
-    .catch(console.error);
+main().catch(console.error);
