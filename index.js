@@ -34,6 +34,12 @@ const questions = [
         name: 'description',
         message: 'Enter the description of resource:',
     },
+    {
+        type: 'confirm',
+        name: 'nuiUsage',
+        message: 'Do you want to use NUI?',
+        default: false,
+    }
 ];
 
 const luaOptions = {
@@ -55,6 +61,10 @@ const tsBuildToolOptions = {
     name: 'tsBuildTool',
     message: 'Choose a TypeScript build tool',
     choices: ['esbuild', 'tsc', 'webpack', 'rollup'],
+};
+
+const nuiOptions = {
+
 };
 
 function copyFile(sourcePath, destinationPath) {
@@ -162,7 +172,7 @@ async function copyBuildToolConfig(tsBuildTool, templatePath, destinationPath) {
 
 async function main() {
     const answers = await inquirer.prompt(questions);
-    const { language, resourceName, author, description } = answers;
+    const { language, resourceName, author, description, nuiUsage } = answers;
     const languageFolderMap = {
         Lua: 'lua',
         JavaScript: 'js',
@@ -259,4 +269,5 @@ async function main() {
     );
 }
 
-main().catch(console.error);
+main()
+    .catch(console.error);
