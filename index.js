@@ -42,12 +42,20 @@ const questions = [
     },
 ];
 
-const luaOptions = {
-    type: 'confirm',
-    name: 'lua54',
-    message: 'Do you want to use Lua 5.4?',
-    default: true,
-};
+const luaOptions = [
+    {
+        type: 'confirm',
+        name: 'lua54',
+        message: 'Do you want to use Lua 5.4?',
+        default: true,
+    },
+    {
+        type: 'confirm',
+        name: 'fxv2',
+        message: 'Do you want to use FXV2 OAL?',
+        default: false,
+    },
+];
 
 const packageManagerOptions = {
     type: 'list',
@@ -218,15 +226,26 @@ async function main() {
         .replace('%DESCRIPTION%', description);
 
     if (language === 'Lua') {
-        const { lua54 } = await inquirer.prompt(luaOptions);
-        if (lua54) {
-            fxmanifestTemplate = fxmanifestTemplate.replace('%LUA54%', 'yes');
-        } else {
-            fxmanifestTemplate = fxmanifestTemplate.replace(
-                /^\s*lua54.*(\r?\n)?/gm,
-                ''
-            );
-        }
+        const { lua54, fxv2 } = await inquirer.prompt(luaOptions);
+
+        const replacements = [
+            {
+                condition: lua54,
+                placeholder: '%LUA54%',
+                regex: /^\s*lua54.*(\r?\n)?/gm,
+            },
+            {
+                condition: fxv2,
+                placeholder: '%FXV2%',
+                regex: /^\s*use_experimental_fxv2_oal.*(\r?\n)?/gm,
+            },
+        ];
+
+        replacements.forEach(({ condition, placeholder, regex }) => {
+            fxmanifestTemplate = condition
+                ? fxmanifestTemplate.replace(placeholder, 'yes')
+                : fxmanifestTemplate.replace(regex, '');
+        });
     }
 
     fs.writeFileSync(
