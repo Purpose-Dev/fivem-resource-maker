@@ -124,7 +124,7 @@ async function initializeProject(destinationPath, packageManager, buildTool) {
             const buildToolDependencies = {
                 esbuild: 'esbuild',
                 tsc: 'typescript',
-                webpack: 'webpack webpack-cli',
+                webpack: 'webpack webpack-cli ts-loader',
                 rollup: 'rollup rollup-plugin-terser @rollup/plugin-node-resolve @rollup/plugin-commonjs',
             };
 
