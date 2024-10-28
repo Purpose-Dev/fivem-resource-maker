@@ -8,6 +8,7 @@ A CLI Tool to quickly generate FiveM resources with support for JavaScript, Type
 - [Usage](#usage)
 - [Features](#features)
 - [Examples](#examples)
+- [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
@@ -38,6 +39,7 @@ pnpx fivem-resource-maker # If you use pnpm
 - Option to use different package managers: npm, yarn, or pnpm.
 - Customizable build tools for TypeScript projects: esbuild, tsc, webpack, and rollup.
 - Option to include Lua 5.4 support in Lua projects.
+- Option to use FxV2 OAL in Lua projects.
 
 ## Examples
 
@@ -49,6 +51,64 @@ pnpx fivem-resource-maker # If you use pnpm
 
 ### Generating a TypeScript Resource
 ![ts.png](images/ts.png)
+
+## Roadmap
+
+🕑: to do 🚧: wip ✅: finished
+
+| Framework / Library | CSS Framework | Language   | Avancement |
+|---------------------|---------------|------------|------------|
+| vanilla             | none          | JavaScript | 🕑         |
+| vanilla             | none          | TypeScript | 🕑         |
+| vanilla             | bootstrap     | JavaScript | 🕑         |
+| vanilla             | bootstrap     | TypeScript | 🕑         |
+| vanilla             | tailwind      | JavaScript | 🕑         |
+| vanilla             | tailwind      | TypeScript | 🕑         |
+| vanilla             | sass          | JavaScript | 🕑         |
+| vanilla             | sass          | TypeScript | 🕑         |
+| vanilla             | less          | JavaScript | 🕑         |
+| vanilla             | less          | TypeScript | 🕑         |
+| react               | none          | JavaScript | 🕑         |
+| react               | none          | TypeScript | 🕑         |
+| react               | bootstrap     | JavaScript | 🕑         |
+| react               | bootstrap     | TypeScript | 🕑         |
+| react               | tailwind      | JavaScript | 🕑         |
+| react               | tailwind      | TypeScript | 🕑         |
+| react               | sass          | JavaScript | 🕑         |
+| react               | sass          | TypeScript | 🕑         |
+| react               | less          | JavaScript | 🕑         |
+| react               | less          | TypeScript | 🕑         |
+| vue                 | none          | JavaScript | 🕑         |
+| vue                 | none          | TypeScript | 🕑         |
+| vue                 | bootstrap     | JavaScript | 🕑         |
+| vue                 | bootstrap     | TypeScript | 🕑         |
+| vue                 | tailwind      | JavaScript | 🕑         |
+| vue                 | tailwind      | TypeScript | 🕑         |
+| vue                 | sass          | JavaScript | 🕑         |
+| vue                 | sass          | TypeScript | 🕑         |
+| vue                 | less          | JavaScript | 🕑         |
+| vue                 | less          | TypeScript | 🕑         |
+| svelte              | none          | JavaScript | 🕑         |
+| svelte              | none          | TypeScript | 🕑         |
+| svelte              | bootstrap     | JavaScript | 🕑         |
+| svelte              | bootstrap     | TypeScript | 🕑         |
+| svelte              | tailwind      | JavaScript | 🕑         |
+| svelte              | tailwind      | TypeScript | 🕑         |
+| svelte              | sass          | JavaScript | 🕑         |
+| svelte              | sass          | TypeScript | 🕑         |
+| svelte              | less          | JavaScript | 🕑         |
+| svelte              | less          | TypeScript | 🕑         |
+| angular             | none          | JavaScript | 🕑         |
+| angular             | none          | TypeScript | 🕑         |
+| angular             | bootstrap     | JavaScript | 🕑         |
+| angular             | bootstrap     | TypeScript | 🕑         |
+| angular             | tailwind      | JavaScript | 🕑         |
+| angular             | tailwind      | TypeScript | 🕑         |
+| angular             | sass          | JavaScript | 🕑         |
+| angular             | sass          | TypeScript | 🕑         |
+| angular             | less          | JavaScript | 🕑         |
+| angular             | less          | TypeScript | 🕑         |
+
 
 ## Contributing
 
