@@ -2,6 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 lua54 '%LUA54%'
+use_experimental_fxv2_oal '%FXV2%'
 
 author '%AUTHOR%'
 description '%DESCRIPTION%'
